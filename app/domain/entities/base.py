@@ -17,10 +17,8 @@ class BaseEntity(ABC):
         default_factory=list,
         kw_only=True,
     )
-    create_at: datetime = field(
-        default_factory=datetime.now,
-        kw_only=True
-    )
+    create_at: datetime = field(default_factory=datetime.now, kw_only=True)
+
     def __hash__(self) -> int:
         return hash(self.oid)
 

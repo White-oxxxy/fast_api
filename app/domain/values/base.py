@@ -5,6 +5,7 @@ from typing import TypeVar, Any, Generic
 
 VT = TypeVar("VT", bound=Any)
 
+
 @dataclass(frozen=True)
 class BaseValueObject(ABC):
     value: VT
@@ -13,9 +14,7 @@ class BaseValueObject(ABC):
         return self.validate()
 
     @abstractmethod
-    def validate(self):
-        ...
+    def validate(self): ...
 
     @abstractmethod
-    def as_generic_type(self) -> VT:
-        ...
+    def as_generic_type(self) -> VT: ...
