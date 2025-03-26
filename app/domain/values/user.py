@@ -35,3 +35,13 @@ class Password(BaseValueObject):
 
     def as_generic_type(self) -> VT:
         return str(self.value)
+
+
+@dataclass(frozen=True)
+class BirthdayDate(BaseValueObject):
+    value: str
+
+    def validate(self): ...
+
+    def as_generic_type(self) -> VT:
+        return self.value
