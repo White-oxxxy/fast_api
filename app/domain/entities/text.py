@@ -1,19 +1,19 @@
 from dataclasses import dataclass, field
+from pydantic import BaseModel
 
 from domain.entities.base import BaseEntity
-from domain.values.text import TextValue
-from domain.values.tag import Name
+
 
 
 @dataclass(eq=False)
-class Tag(BaseEntity):
-    name: Name
+class Tag(BaseEntity, BaseModel):
+    name: str
     uploader_name: str
 
 
 @dataclass(eq=False)
-class Text(BaseEntity):
-    value: TextValue
+class Text(BaseEntity, BaseModel):
+    value: str
     uploader_name: str
     tags: set[Tag] = field(
         default_factory=set,
