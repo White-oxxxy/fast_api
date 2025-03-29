@@ -4,10 +4,33 @@ from datetime import datetime
 
 from uuid import UUID
 
-from domain.entities.user import User
-from infra.pg.models.base import BaseORM
-from infra.pg.models.role import RoleORM
-from infra.pg.models.mixins import TimeMixin, UUIDOidMixin
+from .base import BaseORM
+from .mixins import TimeMixin, UUIDOidMixin
+from .associative import UserActionORM, UserTagORM, UserTextORM, TextTagORM
+
+
+class TagORM(BaseORM, TimeMixin, UUIDOidMixin):
+    __tablename__ = "tag" # noqa
+
+    name: Mapped[str] = mapped_column(nullable=False)
+    uploader_name: Mapped[list["UserORM"]] = relationship(back_populates="user")
+
+    texts: Mapped[list["TextORM"]] = relationship(secondary=TextTagORM.__tablename__,back_populates="tags")
+
+
+class TextORM(BaseORM, TimeMixin, UUIDOidMixin):
+    __tablename__ = "text" # noqa
+
+    value: Mapped[str] = mapped_column(nullable=False)
+
+    tags: Mapped[list["TagORM"]] = relationship(secondary=TextTagORM.__tablename__,back_populates="texts")
+
+
+class ActionORM(BaseORM, TimeMixin, UUIDOidMixin):
+    __tablename__ = "action" # noqa
+
+    content: Mapped[str] = mapped_column(nullable=False)
+    author: Mapped[list["UserORM"]] = relationship(secondary=UserActionORM.__tablename__, back_populates="action_author")
 
 
 class UserORM(BaseORM, TimeMixin, UUIDOidMixin):
@@ -15,26 +38,17 @@ class UserORM(BaseORM, TimeMixin, UUIDOidMixin):
 
     username: Mapped[str] = mapped_column(nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    role_id: Mapped[UUID] = mapped_column(ForeignKey("role.oid"))
+    role: Mapped["RoleORM"] = relationship(back_populates="users")
     birthday: Mapped[datetime] = mapped_column(DateTime, nullable=False)
 
-    role: Mapped[RoleORM] = relationship(back_populates="users")
+    action_author: Mapped[list["ActionORM"]] = relationship(secondary=UserActionORM.__tablename__, back_populates="author")
+    # заебало
 
-    @staticmethod
-    def from_entity(entity: User) -> "UserORM":
-        return UserORM(
-            oid=entity.oid,
-            username=entity.username,
-            password=entity.password,
-            role_id=entity.role_id,
-            birthday=entity.birthday
-        )
 
-    def to_entity(self) -> User:
-        return User(
-            oid=self.oid,
-            username=self.username,
-            password=self.password,
-            role_id=self.role_id,
-            birthday=self.birthday
-        )
+class RoleORM(BaseORM, TimeMixin, UUIDOidMixin):
+    __tablename__ = "role"  # noqa
+
+    name: Mapped[str] = mapped_column(nullable=False)
+    description: Mapped[str] = mapped_column()
+
+    users: Mapped[list["UserORM"]] = relationship(back_populates="role")
