@@ -13,15 +13,16 @@ class TagORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "tag" # noqa
 
     name: Mapped[str] = mapped_column(nullable=False)
-    uploader_name: Mapped[list["UserORM"]] = relationship(back_populates="user")
+    uploader_name: Mapped[list["UserORM"]] = relationship(secondary=UserTagORM.__tablename__,back_populates="tag_uploader")
 
-    texts: Mapped[list["TextORM"]] = relationship(secondary=TextTagORM.__tablename__,back_populates="tags")
+    texts: Mapped[list["TextORM"]] = relationship(secondary=TextTagORM.__tablename__, back_populates="tags")
 
 
 class TextORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "text" # noqa
 
     value: Mapped[str] = mapped_column(nullable=False)
+    uploader: Mapped[list["UserORM"]] = relationship(secondary=UserTextORM.__tablename__, back_populates="text_uploader")
 
     tags: Mapped[list["TagORM"]] = relationship(secondary=TextTagORM.__tablename__,back_populates="texts")
 
@@ -42,6 +43,8 @@ class UserORM(BaseORM, TimeMixin, UUIDOidMixin):
     birthday: Mapped[datetime] = mapped_column(DateTime, nullable=False)
 
     action_author: Mapped[list["ActionORM"]] = relationship(secondary=UserActionORM.__tablename__, back_populates="author")
+    tag_uploader: Mapped[list["TagORM"]] = relationship(secondary=UserTagORM.__tablename__, back_populates="uploader_name")
+    text_uploader: Mapped[list["TextORM"]] = relationship(secondary=UserTextORM.__tablename__, back_populates="uploader")
     # заебало
 
 
