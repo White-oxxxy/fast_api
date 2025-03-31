@@ -6,19 +6,10 @@ from mixins import IntPkMixin, TimeMixin
 
 
 @dataclass
-class MessageCreate(BaseModel):
-    content: "ActionCreate"
-
-
-@dataclass
 class ActionCreate(BaseModel):
     content: str
     uploader_name: str
     upload_time: datetime
-
-
-@dataclass
-class MessageFromDB(MessageCreate, IntPkMixin, TimeMixin): ...
 
 
 @dataclass

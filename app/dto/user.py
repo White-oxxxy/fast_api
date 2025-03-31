@@ -8,6 +8,7 @@ from mixins import IntPkMixin, TimeMixin
 class UserCreate(BaseModel):
     username: str
     password: str
+    role: str
     birthday_date: str
 
 

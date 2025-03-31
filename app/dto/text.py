@@ -8,7 +8,6 @@ from mixins import IntPkMixin, TimeMixin
 class TextCreate(BaseModel):
     value: str
     uploader_name: str
-    tags: set["TagCreate"]
 
 
 @dataclass
