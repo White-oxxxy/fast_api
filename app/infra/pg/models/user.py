@@ -49,7 +49,7 @@ class UserORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
     action: Mapped[list["ActionORM"]] = relationship(secondary=UserActionORM.__tablename__, back_populates="user")
     role: Mapped["RoleORM"] = relationship(back_populates="user")
 
-class RoleORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
+class RoleORM(BaseORM, TimeMixin, IntPKMixin):
     __tablename__ = "role"  # noqa
 
     name: Mapped[str] = mapped_column(nullable=False)

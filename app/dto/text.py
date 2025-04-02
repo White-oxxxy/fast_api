@@ -7,13 +7,13 @@ from mixins import IntPkMixin, TimeMixin
 @dataclass
 class TextCreate(BaseModel):
     value: str
-    uploader_name: str
+    uploader_id: int
 
 
 @dataclass
 class TagCreate(BaseModel):
     name: str
-    uploader_name: str
+    uploader_id: int
 
 
 @dataclass

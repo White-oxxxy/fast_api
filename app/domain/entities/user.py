@@ -15,12 +15,6 @@ class User(BaseEntity, BaseModel):
 
 
 @dataclass(eq=False)
-class Role(BaseEntity, BaseModel):
-    name: str
-    description: Optional[str] = None
-
-
-@dataclass(eq=False)
 class Tag(BaseEntity, BaseModel):
     name: str
     uploader_name: str

@@ -8,7 +8,6 @@ from mixins import IntPkMixin, TimeMixin
 @dataclass
 class RoleCreate(BaseModel):
     name: str
-    uploader_name: str
     description: Optional[str] = None
 
 
