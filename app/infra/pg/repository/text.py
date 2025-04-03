@@ -18,7 +18,7 @@ class TextRepositoryORM(BaseRepositoryORM):
         return text
 
     async def create_text(self, text: TextCreate) -> TextORM:
-        text = TextORM(**text.model_dump(mode="python"))
+        text = TextORM(**text.model_dump())
         self.session.add(text)
         return text
 
@@ -47,7 +47,7 @@ class TextRepositoryORM(BaseRepositoryORM):
         result: Result = await self.session.execute(stmt)
         text: TextORM | None = result.scalars().first()
         if text:
-            tag = TagORM(**tag.model_dump(mode="python"))
+            tag = TagORM(**tag.model_dump())
             text.tags.append(tag)
             self.session.add(text)
         return text
@@ -90,27 +90,27 @@ class TextTagRepositoryORM(BaseRepositoryORM):
         return text
 
 
-class UserTagRepositoryORM(BaseRepositoryORM):
-    async def get_by_username(self, username: str) -> list[TagORM]:
-        stmt: Select[tuple[TagORM]] = (
-            select(TagORM)
-            .join(UserTagORM, UserTagORM.tag_oid == TagORM.oid)
-            .join(UserORM, UserTagORM.user_oid == UserORM.oid)
-            .where(UserORM.username == username)
-        )
-        result: Result[tuple[TagORM]] = await self.session.execute(stmt)
-        tags: list[TagORM] = list(result.scalars().all())
-        return tags
-
-
-class UserTextRepositoryORM(BaseRepositoryORM):
-    async def get_by_username(self, username: str) -> list[TextORM]:
-        stmt: Select[tuple[TextORM]] = (
-            select(TextORM)
-            .join(UserTextORM, UserTextORM.text_oid == TextORM.oid)
-            .join(UserORM, UserTextORM.user_oid == UserORM.oid)
-            .where(UserORM.username == username)
-        )
-        result: Result[tuple[TextORM]] = await self.session.execute(stmt)
-        texts: list[TextORM] = list(result.scalars().all())
-        return texts
+# class UserTagRepositoryORM(BaseRepositoryORM):
+#     async def get_by_username(self, username: str) -> list[TagORM]:
+#         stmt: Select[tuple[TagORM]] = (
+#             select(TagORM)
+#             .join(UserTagORM, UserTagORM.tag_oid == TagORM.oid)
+#             .join(UserORM, UserTagORM.user_oid == UserORM.oid)
+#             .where(UserORM.username == username)
+#         )
+#         result: Result[tuple[TagORM]] = await self.session.execute(stmt)
+#         tags: list[TagORM] = list(result.scalars().all())
+#         return tags
+#
+#
+# class UserTextRepositoryORM(BaseRepositoryORM):
+#     async def get_by_username(self, username: str) -> list[TextORM]:
+#         stmt: Select[tuple[TextORM]] = (
+#             select(TextORM)
+#             .join(UserTextORM, UserTextORM.text_oid == TextORM.oid)
+#             .join(UserORM, UserTextORM.user_oid == UserORM.oid)
+#             .where(UserORM.username == username)
+#         )
+#         result: Result[tuple[TextORM]] = await self.session.execute(stmt)
+#         texts: list[TextORM] = list(result.scalars().all())
+#         return texts

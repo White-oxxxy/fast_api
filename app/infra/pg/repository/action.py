@@ -18,7 +18,7 @@ class ActionRepositoryORM(BaseRepositoryORM):
         return action
 
     async def create(self, action: ActionCreate) -> ActionORM:
-        action = ActionORM(**action.model_dump(mode="python"))
+        action = ActionORM(**action.model_dump())
         self.session.add(action)
         return action
 

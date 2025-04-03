@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator
 
 from sqlalchemy.exc import SQLAlchemyError
@@ -25,6 +26,7 @@ class Database:
             expire_on_commit=False
         )
 
+    @asynccontextmanager
     async def get_session(self) -> AsyncGenerator[AsyncSession, Any]:
         session: AsyncSession = self.async_session()
         try:
@@ -32,6 +34,7 @@ class Database:
         except SQLAlchemyError:
             await session.rollback()
 
+    @asynccontextmanager
     async def get_read_only_session(self) -> AsyncGenerator[AsyncSession, Any]:
         session: AsyncSession = self.read_only_async_session()
         try:

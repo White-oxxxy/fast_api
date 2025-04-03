@@ -1,10 +1,16 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from uuid import UUID
 from typing import Optional
 
 from pydantic import BaseModel
 from domain.entities.base import BaseEntity
+
+
+@dataclass
+class Role(BaseEntity, BaseModel):
+    name: str
+    description: Optional[str] = None
+
 
 @dataclass(eq=False)
 class User(BaseEntity, BaseModel):
@@ -34,5 +40,4 @@ class Text(BaseEntity, BaseModel):
 class Action(BaseEntity, BaseModel):
     content: str
     author_name: str
-    create_time: datetime
 

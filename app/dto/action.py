@@ -8,7 +8,7 @@ from mixins import IntPkMixin, TimeMixin
 @dataclass
 class ActionCreate(BaseModel):
     content: str
-    uploader_id: int
+    author_name: str
 
 
 @dataclass

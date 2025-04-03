@@ -14,7 +14,7 @@ class RoleRepositoryORM(BaseRepositoryORM):
         return role
 
     async def create(self, role: RoleCreate) -> RoleORM:
-        role = RoleORM(**role.model_dump(mode="python"))
+        role = RoleORM(**role.model_dump())
         self.session.add(role)
         return role
 
@@ -38,14 +38,7 @@ class UserRepositoryORM(BaseRepositoryORM):
         return user
 
     async def create(self, user: UserCreate) -> UserORM:
-        user_data: dict = user.model_dump(mode="python")
-        stmt: Select[tuple[RoleORM]] = (
-            select(RoleORM).where(RoleORM.name == user_data["role"]).limit(1)
-        )
-        role: RoleORM | None = await self.session.scalar(stmt)
-        if not role:
-            raise EmptyRoleAnswer
-        user = UserORM(**user_data)
+        user = UserORM(**user.model_dump())
         self.session.add(user)
         return user
 
