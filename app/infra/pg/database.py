@@ -8,22 +8,16 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 class Database:
     def __init__(self, url: str, ro_url: str) -> None:
         self.async_engine = create_async_engine(
-            url=url,
-            pool_pre_ping=False,
-            isolation_level="READ COMMITTED"
+            url=url, pool_pre_ping=False, isolation_level="READ COMMITTED"
         )
         self.async_session = async_sessionmaker(
-            bind=self.async_engine,
-            expire_on_commit=False
+            bind=self.async_engine, expire_on_commit=False
         )
         self.read_only_async_engine = create_async_engine(
-            url=ro_url,
-            pool_pre_ping=False,
-            isolation_level="AUTOCOMMITT"
+            url=ro_url, pool_pre_ping=False, isolation_level="AUTOCOMMITT"
         )
         self.read_only_async_session = async_sessionmaker(
-            bind=self.read_only_async_engine,
-            expire_on_commit=False
+            bind=self.read_only_async_engine, expire_on_commit=False
         )
 
     @asynccontextmanager

@@ -1,6 +1,6 @@
-from domain.entities.user import User
+from domain.entities.entities import User
 from infra.pg.models.user import UserORM
-from utils.roles.roles import Roles
+from utils.roles_names.roles import Roles
 
 
 class GetUserFromORM:
@@ -9,8 +9,7 @@ class GetUserFromORM:
         user_entity = User(
             oid=user.oid,
             username=user.username,
-            password=user.password,
             role_name=Roles(user.role_id).value,
-            birthday=user.birthday
+            birthday=user.birthday,
         )
         return user_entity

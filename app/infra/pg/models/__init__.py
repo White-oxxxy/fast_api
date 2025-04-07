@@ -1,6 +1,11 @@
 from infra.pg.models.base import BaseORM
 from infra.pg.models.user import RoleORM, UserORM, TextORM, TagORM, ActionORM
-from infra.pg.models.associative import TextTagORM, UserTagORM, UserTextORM, UserActionORM
+from infra.pg.models.associative import (
+    TextTagORM,
+    UserTagORM,
+    UserTextORM,
+    UserActionORM,
+)
 
 __all__ = [
     "BaseORM",
@@ -12,5 +17,5 @@ __all__ = [
     "TextTagORM",
     "UserActionORM",
     "UserTextORM",
-    "UserTagORM"
+    "UserTagORM",
 ]

@@ -1,7 +1,6 @@
 from sqlalchemy import Result, Select, select
 from uuid import UUID
 
-from dto.role import RoleCreate
 from dto.user import UserCreate
 from .base import BaseRepositoryORM
 from infra.pg.models.user import UserORM, RoleORM
@@ -11,11 +10,6 @@ from infra.pg.repository.exceptions.user import EmptyRoleAnswer
 class RoleRepositoryORM(BaseRepositoryORM):
     async def get_by_id(self, required_id: int) -> RoleORM | None:
         role: RoleORM | None = await self.session.get(RoleORM, required_id)
-        return role
-
-    async def create(self, role: RoleCreate) -> RoleORM:
-        role = RoleORM(**role.model_dump())
-        self.session.add(role)
         return role
 
     async def get_by_name(self, name: str) -> RoleORM | None:
@@ -43,7 +37,9 @@ class UserRepositoryORM(BaseRepositoryORM):
         return user
 
     async def get_by_username(self, username: str) -> UserORM | None:
-        stmt: Select[tuple[UserORM]] = select(UserORM).where(UserORM.username == username)
+        stmt: Select[tuple[UserORM]] = select(UserORM).where(
+            UserORM.username == username
+        )
         user: UserORM | None = await self.session.scalar(stmt)
         if not user:
             return None

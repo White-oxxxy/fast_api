@@ -8,7 +8,6 @@ from domain.services.healthchek import IHealthCheckService
 from utils.aio import gather_and_wait
 
 
-
 @dataclass
 class PostgresHealthcheckService(IHealthCheckService):
     database: Database

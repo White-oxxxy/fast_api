@@ -11,7 +11,19 @@ class TextCreate(BaseModel):
 
 
 @dataclass
+class Text(BaseModel):
+    value: str
+    uploader_name: str
+
+
+@dataclass
 class TagCreate(BaseModel):
+    name: str
+    uploader_name: str
+
+
+@dataclass
+class Tag(BaseModel):
     name: str
     uploader_name: str
 

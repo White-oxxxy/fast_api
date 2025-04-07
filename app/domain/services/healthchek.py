@@ -1,7 +1,6 @@
-import abc
+from abc import ABC, abstractmethod
 
 
-class IHealthCheckService(abc.ABC):
-    @abc.abstractmethod
-    async def check(self):
-        pass
+class IHealthCheckService(ABC):
+    @abstractmethod
+    async def check(self): ...

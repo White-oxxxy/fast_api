@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from domain.entities.user import User
+from domain.entities.entities import User
 
 
 class IUserService(ABC):
