@@ -4,18 +4,6 @@ from pydantic import BaseModel
 from domain.entities.base import BaseEntity
 
 
-@dataclass
-class Role(BaseEntity, BaseModel):
-    name: str
-
-
-@dataclass(eq=False)
-class User(BaseEntity, BaseModel):
-    username: str
-    role_name: str
-    active: bool
-
-
 @dataclass(eq=False)
 class Tag(BaseEntity, BaseModel):
     name: str
@@ -28,9 +16,3 @@ class Text(BaseEntity, BaseModel):
         default_factory=list,
         kw_only=True,
     )
-
-
-@dataclass(eq=False)
-class Action(BaseEntity, BaseModel):
-    content: str
-    author_name: str

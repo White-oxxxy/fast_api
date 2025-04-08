@@ -1,4 +1,4 @@
-from domain.entities.entities import Tag, Text
+from domain.entities.text import Tag, Text
 from infra.pg.models.user import TextORM, TagORM
 
 

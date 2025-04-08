@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from domain.entities.entities import Text, Tag
+from domain.entities.text import Text, Tag
 
 
 class ITextService(ABC): ...

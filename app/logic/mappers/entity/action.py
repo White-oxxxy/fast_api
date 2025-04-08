@@ -1,4 +1,4 @@
-from domain.entities.entities import Action
+from domain.entities.action import Action
 from infra.pg.models.user import ActionORM
 
 

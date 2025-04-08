@@ -5,7 +5,7 @@ services:
     ports:
       - "45432:5432"
     env_file:
-      - ../.env
+      - ../.dev.env
     environment:
       POSTGRES_DB: $POSTGRES_DB
       POSTGRES_USER: $POSTGRES_USER
