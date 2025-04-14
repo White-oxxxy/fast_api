@@ -3,11 +3,11 @@ import sqlalchemy as sa
 from datetime import datetime
 
 from .base import BaseORM
-from .mixins import TimeMixin, UUIDOidMixin, IntPKMixin
+from .mixins import TimeMixin, UUIDOidMixin
 from .associative import TextTagORM
 
 
-class TagORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
+class TagORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "tag"  # noqa
 
     name: Mapped[str] = mapped_column(nullable=False)
@@ -18,7 +18,7 @@ class TagORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
     )
 
 
-class TextORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
+class TextORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "text"  # noqa
 
     value: Mapped[str] = mapped_column(nullable=False)
@@ -29,19 +29,18 @@ class TextORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
     )
 
 
-class ActionORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
+class ActionORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "action"  # noqa
 
     content: Mapped[str] = mapped_column(nullable=False)
     author_name: Mapped[str] = mapped_column(nullable=False)
 
 
-class RefreshTokenORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
+class RefreshTokenORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "refresh_tokens"  # noqa
 
     token: Mapped[str] = mapped_column(unique=True, nullable=False)
     user_id: Mapped[int] = mapped_column(sa.ForeignKey("user.id"))
-    jti: Mapped[str] = mapped_column(unique=True, nullable=False)
     user_agent: Mapped[str] = mapped_column()
     ip_address: Mapped[str] = mapped_column()
     expires_at: Mapped[datetime] = mapped_column(nullable=False)
@@ -50,7 +49,7 @@ class RefreshTokenORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
     user: Mapped["UserORM"] = relationship(back_populates="refresh_tokens")
 
 
-class UserORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
+class UserORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "user"  # noqa
 
     username: Mapped[str] = mapped_column(nullable=False, unique=True)
@@ -63,7 +62,7 @@ class UserORM(BaseORM, TimeMixin, UUIDOidMixin, IntPKMixin):
     role: Mapped["RoleORM"] = relationship(back_populates="user")
 
 
-class RoleORM(BaseORM, TimeMixin, IntPKMixin):
+class RoleORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "role"  # noqa
 
     name: Mapped[str] = mapped_column(nullable=False)

@@ -1,5 +1,4 @@
 from sqlalchemy import Result, Select, select
-from uuid import UUID
 
 from dto.user import UserCreate
 from .base import BaseRepositoryORM

@@ -15,19 +15,11 @@ class JWTAuthService(IJWTAuthService):
     def __init__(
         self,
         settings: CommonSettings,
-        req: Request = None,
-        res: Response = None,
         cookie_service: Optional[ICookieService] = None,
     ):
         self._config = settings.jwt_settings
         self._token = None
         self._cookie = cookie_service
-
-        if res and self._config.jwt_in_cookies:
-            self._response = res
-
-        if req:
-            ...
 
     def create_access_token(
         self,
@@ -136,5 +128,3 @@ class JWTAuthService(IJWTAuthService):
                 return self.__get_int_from_datetime(datetime.now(timezone.utc)) + self._config.jwt_access_token_expires
             case "refresh":
                 return self.__get_int_from_datetime(datetime.now(timezone.utc)) + self._config.jwt_refresh_token_expires
-
-

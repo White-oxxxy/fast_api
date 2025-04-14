@@ -2,8 +2,6 @@ from dataclasses import dataclass
 from pydantic import BaseModel
 from datetime import datetime
 
-from mixins import IntPkMixin, TimeMixin
-
 
 @dataclass
 class UserCreate(BaseModel):
@@ -14,12 +12,3 @@ class UserCreate(BaseModel):
     birthday_date: datetime
 
 
-@dataclass
-class User(BaseModel):
-    username: str
-    password: str
-    birthday: datetime
-
-
-@dataclass
-class UserFromDB(UserCreate, IntPkMixin, TimeMixin): ...
