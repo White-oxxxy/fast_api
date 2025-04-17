@@ -1,7 +1,7 @@
 DC = docker compose
 EXEC = docker exec -it
 LOGS = docker logs
-ENV = --env-file .env
+ENV = --env-file .dev.env
 APP_FILE = docker_compose/app.yaml
 STORAGES_FILE = docker_compose/storages.yaml
 APP_CONTAINER = main-app
@@ -9,7 +9,7 @@ APP_CONTAINER = main-app
 .PHONY: app
 app:
 	${DC} -f ${APP_FILE} ${ENV} up --build -d
-	#docker-compose -f docker_compose/app.yaml --env-file .env up --build -d
+	#docker-compose -f docker_compose/app.yaml --env-file .dev.env up --build -d
 
 .PHONY: storages
 storages:

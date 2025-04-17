@@ -2,7 +2,6 @@ from datetime import datetime, timezone
 from typing import Optional, Union
 
 import jwt
-from fastapi import Request, Response
 from uuid import uuid4
 
 from domain.services.auth import IJWTAuthService, ICookieService

@@ -6,9 +6,8 @@ from utils.consts.roles import Roles
 class GetUserFromORM:
     @staticmethod
     def execute(user: UserORM) -> User:
-        user_entity = User(
+        return User(
             oid=user.oid,
             username=user.username,
-            role_name=Roles(user.role_id).value,
+            role_name=Roles.from_id(user.role_id),
         )
-        return user_entity

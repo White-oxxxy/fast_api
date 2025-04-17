@@ -6,12 +6,14 @@ from typing import Optional
 class RefreshTokenSchema(BaseModel):
     token: str
 
+
 class CreateRefreshTokenSchema(BaseModel):
-    token: RefreshTokenSchema
-    user_id: int
+    token: str
+    username: str
     user_agent: str
     ip_address: str
     expires_at: datetime
+
 
 class UpdateRefreshTokenSchema(BaseModel):
     used: Optional[bool] = None

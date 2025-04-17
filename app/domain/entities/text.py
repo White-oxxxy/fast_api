@@ -16,3 +16,16 @@ class Text(BaseEntity, BaseModel):
         default_factory=list,
         kw_only=True,
     )
+
+
+@dataclass
+class TagInput(BaseEntity, BaseModel):
+    name: str
+    uploader_name: str
+
+
+@dataclass
+class TextInput(BaseEntity, BaseModel):
+    value: str
+    uploader_name: str
+    tags: list[TagInput] = field(default_factory=list)

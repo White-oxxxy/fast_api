@@ -1,16 +1,21 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+from datetime import datetime
+
 from domain.entities.base import BaseEntity
-
-
-@dataclass
-class Role(BaseEntity, BaseModel):
-    name: str
 
 
 @dataclass(eq=False)
 class User(BaseEntity, BaseModel):
     username: str
     role_name: str
-    active: bool
+
+
+@dataclass
+class UserInput(BaseEntity, BaseModel):
+    username: str
+    password: str
+    email: EmailStr
+    birthday: datetime
+    role: str

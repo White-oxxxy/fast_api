@@ -22,3 +22,7 @@ class TimeMixin:
 
 class UUIDOidMixin:
     oid: Mapped[UUID] = mapped_column(primary_key=True, unique=True, default=uuid4)
+
+
+class IntPKMixin:
+    pk: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

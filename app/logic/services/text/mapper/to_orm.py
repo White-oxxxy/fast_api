@@ -1,30 +1,17 @@
-from dto.text import TextCreate, TagCreate
+from dataclasses import dataclass
+
+from dto.text.text import TextCreate, TagCreate
 from infra.pg.models.user import TagORM, TextORM
 
-
+@dataclass
 class TextCreateToORM:
-    def execute(self, texts_create: list[TextCreate]) -> list[TextORM]:
-        result: list[TextORM] = []
-        for text in texts_create:
-            text_orm = self._create_text_orm(text)
-            result.append(text_orm)
-        return result
+    def execute(self, text: TextCreate) -> TextORM:
+        return TextORM(
+            value=text.value,
+            uploader_name=text.uploader_name,
+            tags=self._get_tags_orm(tags=text.tags)
+        )
 
     @staticmethod
-    def _create_text_orm(text: TextCreate) -> TextORM:
-        text_orm = TextORM(value=text.value, uploader_name=text.uploader_name)
-        return text_orm
-
-
-class CreateTagToORM:
-    def execute(self, tags_create: list[TagCreate]) -> list[TagORM]:
-        result: list[TagORM] = []
-        for tag in tags_create:
-            tag_orm = self._create_tag_orm(tag)
-            result.append(tag_orm)
-        return result
-
-    @staticmethod
-    def _create_tag_orm(tag: TagCreate) -> TagORM:
-        tag_orm = TagORM(name=tag.name, uploader_name=tag.uploader_name)
-        return tag_orm
+    def _get_tags_orm(tags: list[TagCreate]) -> list[TagORM]:
+        return [TagORM(name=tag.name, uploader_name=tag.uploader_name) for tag in tags]

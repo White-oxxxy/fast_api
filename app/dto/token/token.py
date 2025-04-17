@@ -10,3 +10,8 @@ class RefreshTokenCreate(BaseModel):
     user_agent: str
     ip_address: str
     expires_at: datetime
+
+@dataclass
+class GetRefreshToken(BaseModel):
+    token: str
+    expires_at: datetime

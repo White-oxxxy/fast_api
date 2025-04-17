@@ -1,32 +1,13 @@
-from sqlalchemy import Result, Select, select
+from sqlalchemy import Select, select
+from uuid import UUID
 
-from dto.user import UserCreate
+from dto.user.user import UserCreate
 from .base import BaseRepositoryORM
-from infra.pg.models.user import UserORM, RoleORM
-from infra.pg.repository.exceptions.user import EmptyRoleAnswer
-
-
-class RoleRepositoryORM(BaseRepositoryORM):
-    async def get_by_id(self, required_id: int) -> RoleORM | None:
-        role: RoleORM | None = await self.session.get(RoleORM, required_id)
-        return role
-
-    async def get_by_name(self, name: str) -> RoleORM | None:
-        stmt: Select[tuple[RoleORM]] = (
-            select(RoleORM).where(RoleORM.name == name).limit(1)
-        )
-        role: RoleORM | None = await self.session.scalar(stmt)
-        if not role:
-            return None
-        return role
+from infra.pg.models.user import UserORM
 
 
 class UserRepositoryORM(BaseRepositoryORM):
-    async def get_by_id(self, required_id: int) -> UserORM | None:
-        user: UserORM | None = await self.session.get(UserORM, required_id)
-        return user
-
-    async def get_by_oid(self, required_oid: int) -> UserORM | None:
+    async def get_by_oid(self, required_oid: UUID) -> UserORM | None:
         user: UserORM | None = await self.session.get(UserORM, required_oid)
         return user
 
@@ -42,14 +23,4 @@ class UserRepositoryORM(BaseRepositoryORM):
         user: UserORM | None = await self.session.scalar(stmt)
         if not user:
             return None
-        return user
-
-    async def get_by_role(self, role: str) -> list[UserORM]:
-        stmt: Select[tuple[RoleORM]] = select(RoleORM).where(RoleORM.name == role)
-        role: RoleORM | None = await self.session.scalar(stmt)
-        if not role:
-            raise EmptyRoleAnswer
-        stmt: Select[tuple[UserORM]] = select(UserORM).where(UserORM.role_id == role.pk)
-        result: Result = await self.session.execute(stmt)
-        user: list[UserORM] = list(result.scalars().all())
         return user

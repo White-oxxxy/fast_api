@@ -10,9 +10,19 @@ class UserSchema(BaseModel):
     roles = list[str]
 
 
-class UserLogin(BaseModel):
+class UserLoginSchema(BaseModel):
     login: str
     password: str
+
+
+class AccessTokenLoginResponseSchema(BaseModel):
+    access_token: str
+
+
+class AccessTokenRegisterResponseSchema(BaseModel):
+    access_token: str
+    role: str
+
 
 class CreateUserSchema(BaseModel):
     username: str
@@ -20,3 +30,5 @@ class CreateUserSchema(BaseModel):
     email: EmailStr
     birthday: datetime
     role: str
+
+
