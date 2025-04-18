@@ -44,3 +44,13 @@ class ICookieService(ABC):
     @abstractmethod
     def set_refresh_cookie(self, token: str, max_age: int | None = None) -> None: ...
 
+
+class ITokenService(ABC):
+    @abstractmethod
+    async def create(self): ...
+
+    @abstractmethod
+    async def get(self): ...
+
+    @abstractmethod
+    async def get_or_create(self): ...

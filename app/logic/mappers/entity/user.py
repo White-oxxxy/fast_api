@@ -1,8 +1,10 @@
+from dataclasses import dataclass
+
 from domain.entities.user import User
 from infra.pg.models.user import UserORM
 from utils.consts.roles import Roles
 
-
+@dataclass
 class GetUserFromORM:
     @staticmethod
     def execute(user: UserORM) -> User:

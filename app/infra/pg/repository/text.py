@@ -14,7 +14,11 @@ class TextTagRepositoryORM(BaseRepositoryORM):
         return text
 
     async def get_text(self, value: str) -> TextORM | None:
-        stmt: Select[tuple[TextORM]] = select(TextORM).where(TextORM.value == value)
+        stmt: Select[tuple[TextORM]] = (
+            select(TextORM)
+            .where(TextORM.value == value)
+            .options(joinedload(TextORM.tags))
+        )
         text: TextORM | None = await self.session.scalar(stmt)
         if not text:
             return None
@@ -60,6 +64,7 @@ class TextTagRepositoryORM(BaseRepositoryORM):
             select(TextORM)
             .join(TextTagORM, TextTagORM.text_oid == TextORM.oid)
             .filter(TextORM.value.like("%" + value + "%"))
+            .options(joinedload(TextORM.tags))
         )
         result: Result[tuple[TextORM]] = await self.session.execute(stmt)
         text: list[TextORM] = list(result.scalars().all())

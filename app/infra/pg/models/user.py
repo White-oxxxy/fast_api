@@ -10,7 +10,7 @@ from .associative import TextTagORM
 class TagORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "tag"  # noqa
 
-    name: Mapped[str] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
     uploader_name: Mapped[str] = mapped_column(nullable=False)
 
     texts: Mapped[list["TextORM"]] = relationship(

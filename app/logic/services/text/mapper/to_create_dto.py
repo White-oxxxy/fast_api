@@ -31,3 +31,13 @@ class TextInputToTextCreate:
     @staticmethod
     def _get_tags(tags: list[TagInput]) -> list[TagCreate]:
         return [TagCreate(name=tag_input.name, uploader_name=tag_input.uploader_name) for tag_input in tags]
+
+
+@dataclass
+class TagInputToTagCreate:
+    @staticmethod
+    def execute(tag: TagInput) -> TagCreate:
+        return TagCreate(
+            name=tag.name,
+            uploader_name=tag.uploader_name
+        )
