@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Union
 from fastapi import Response
 
-from .exceptions.exceptions import JWTDecodeException
+from logic.services.auth.exceptions.exceptions import JWTDecodeException
 from domain.services.auth import ICookieService
 from settings.dev import CommonSettings
 from utils.crypto import load_public_key

@@ -6,17 +6,16 @@ from datetime import datetime, timezone
 from typing import Optional, Union
 from uuid import uuid4
 
-from domain.services.auth import IJWTAuthService, ICookieService
+from domain.services.auth import IJWTAuthService
 from settings.dev import CommonSettings
 from utils.crypto import load_private_key, load_public_key
 from utils.consts.token_types import TokenTypes
-from .exceptions.exceptions import JWTDecodeException
+from logic.services.auth.exceptions.exceptions import JWTDecodeException
 
 
 @dataclass
 class JWTAuthService(IJWTAuthService):
     settings: CommonSettings
-    cookie_service: ICookieService
     token: str
     def create_access_token(
         self,
@@ -58,20 +57,6 @@ class JWTAuthService(IJWTAuthService):
             )
         except Exception as err:
             raise JWTDecodeException(status_code=422, message=str(err))
-
-    def set_access_cookies(
-        self,
-        encoded_access_token: str,
-        max_age: Optional[int] = None,
-    ) -> None:
-        self.cookie_service.set_access_cookie(encoded_access_token, max_age)
-
-    def set_refresh_cookies(
-        self,
-        encoded_refresh_token: str,
-        max_age: Optional[int] = None,
-    ) -> None:
-        self.cookie_service.set_refresh_cookie(encoded_refresh_token, max_age)
 
     def _create_token(
         self,

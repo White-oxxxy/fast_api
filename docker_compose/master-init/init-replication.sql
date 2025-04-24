@@ -1,0 +1,1 @@
+CREATE ROLE replica WITH REPLICATION LOGIN PASSWORD 'replica_pass';

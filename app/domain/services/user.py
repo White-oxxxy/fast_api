@@ -3,12 +3,11 @@ from abc import ABC, abstractmethod
 from domain.entities.user import User, UserInput
 
 
-class IUserService(ABC):
+class ICreateUserService(ABC):
     @abstractmethod
-    async def get_by_username(self, user: UserInput) -> User | None: ...
+    async def execute(self, user: UserInput) -> User: ...
 
-    @abstractmethod
-    async def create(self, user: UserInput) -> User: ...
 
+class IGetOrCreateUserService(ABC):
     @abstractmethod
-    async def get_or_create(self, user: UserInput) -> User | None: ...
+    async def execute(self, user: UserInput) -> User: ...

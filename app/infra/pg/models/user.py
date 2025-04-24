@@ -21,7 +21,7 @@ class TagORM(BaseORM, TimeMixin, UUIDOidMixin):
 class TextORM(BaseORM, TimeMixin, UUIDOidMixin):
     __tablename__ = "text"  # noqa
 
-    value: Mapped[str] = mapped_column(nullable=False)
+    value: Mapped[str] = mapped_column(nullable=False, unique=True)
     uploader_name: Mapped[str] = mapped_column(nullable=False)
 
     tags: Mapped[list["TagORM"]] = relationship(

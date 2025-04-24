@@ -1,17 +1,18 @@
 from dataclasses import dataclass, field
 
-from pydantic import BaseModel
 from domain.entities.base import BaseEntity
+from domain.values.text import TagName, TextValue
+from domain.values.user import Username
 
 
-@dataclass(eq=False)
-class Tag(BaseEntity, BaseModel):
-    name: str
+@dataclass
+class Tag(BaseEntity):
+    name: TagName
 
 
-@dataclass(eq=False)
-class Text(BaseEntity, BaseModel):
-    value: str
+@dataclass
+class Text(BaseEntity):
+    value: TextValue
     tags: list[Tag] = field(
         default_factory=list,
         kw_only=True,
@@ -19,13 +20,14 @@ class Text(BaseEntity, BaseModel):
 
 
 @dataclass
-class TagInput(BaseEntity, BaseModel):
-    name: str
-    uploader_name: str
+class TagInput(BaseEntity):
+    name: TagName
+    uploader_name: Username
 
 
 @dataclass
-class TextInput(BaseEntity, BaseModel):
-    value: str
-    uploader_name: str
+class TextInput(BaseEntity):
+    value: TextValue
+    uploader_name: Username
     tags: list[TagInput] = field(default_factory=list)
+

@@ -10,7 +10,7 @@ class CreateRefreshTokenORM:
     def execute(token: RefreshTokenCreate) -> RefreshTokenORM:
         return RefreshTokenORM(
             token=token.token,
-            user_id=token.user_id,
+            user_oid=token.user_oid,
             user_agent=token.user_agent,
             ip_address=token.ip_address,
             expires_at=token.expires_at

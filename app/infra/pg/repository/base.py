@@ -1,12 +1,12 @@
-from abc import ABC
 from dataclasses import dataclass
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from infra.pg.models.base import BaseORM
+
+from domain.repositories.base import IBaseRepositoryORM
 
 
 @dataclass
-class BaseRepositoryORM(ABC):
+class BaseRepositoryORM(IBaseRepositoryORM):
     session: AsyncSession
 
     async def commit(self) -> None:
@@ -14,6 +14,3 @@ class BaseRepositoryORM(ABC):
 
     async def flush(self) -> None:
         await self.session.flush()
-
-    def save(self, instance: BaseORM) -> None:
-        self.session.add(instance)

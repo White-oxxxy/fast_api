@@ -14,7 +14,7 @@ app:
 .PHONY: storages
 storages:
 	${DC} -f ${STORAGES_FILE} ${ENV} up --build -d
-	#docker-compose -f docker_compose/storages.yaml --env-file .env up --build -d
+	#docker-compose -f docker_compose/storages.yaml --env-file .dev.env up --build -d
 
 
 .PHONY: app-down

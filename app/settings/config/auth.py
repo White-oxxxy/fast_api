@@ -13,9 +13,6 @@ from pydantic_settings import BaseSettings
 
 @dataclass
 class JWTSettings(BaseSettings):
-    jwt_token_location: Optional[Sequence[StrictStr]] = Field(
-        default="JWT_TOKEN_LOCATION", alias="JWT_TOKEN_LOCATION"
-    )
     jwt_public_key: Optional[StrictStr] = Field(
         default="JWT_PUBLIC_KEY", alias="JWT_PUBLIC_KEY"
     )
@@ -29,12 +26,6 @@ class JWTSettings(BaseSettings):
         default="JWT_DECODE_ALGORITHMS", alias="JWT_DECODE_ALGORITHMS"
     )
     jwt_decode_leeway: Optional[Union[StrictInt, timedelta]] = 0
-    jwt_header_name: Optional[StrictStr] = Field(
-        default="JWT_HEADER_NAME", alias="JWT_HEADER_NAME"
-    )
-    jwt_header_type: Optional[StrictStr] = Field(
-        default="JWT_HEADER_TYPE", alias="JWT_HEADER_TYPE"
-    )
     jwt_access_token_expires: Optional[Union[StrictBool, StrictInt, timedelta]] = (
         timedelta(minutes=15)
     )
@@ -42,7 +33,6 @@ class JWTSettings(BaseSettings):
         timedelta(days=30)
     )
 
-    jwt_cookie_domain: Optional[StrictStr] = None
     jwt_cookie_secure: Optional[StrictBool] = Field(
         default="JWT_COOKIE_SECURE", alias="JWT_COOKIE_SECURE"
     )
@@ -90,34 +80,12 @@ class JWTSettings(BaseSettings):
         return v
 
     @classmethod
-    @field_validator("jwt_token_location", mode="before")
-    def validate_token_location(cls, v):
-        if v:
-            for val in v:
-                if val not in {"headers", "cookies"}:
-                    raise ValueError(
-                        "'authjwt_token_location' должен быть 'headers' или 'cookies'"
-                    )  # noqa
-        return v
-
-    @classmethod
     @field_validator("jwt_cookie_samesite")  # noqa
     def validate_cookie_samesite(cls, v):
         if v and v not in {"strict", "lax", "none"}:
             raise ValueError(
                 "'authjwt_cookie_samesite' должен быть 'strict', 'lax', или 'none'"
             )  # noqa
-        return v
-
-    @classmethod
-    @field_validator("jwt_csrf_methods", mode="before")
-    def validate_csrf_methods(cls, v):
-        if v:
-            return {
-                method.upper()
-                for method in v
-                if method.upper() in {"GET", "HEAD", "POST", "PUT", "DELETE", "PATCH"}
-            }
         return v
 
     @property

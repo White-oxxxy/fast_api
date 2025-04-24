@@ -1,7 +1,7 @@
 services:
-  postgres:
+  postgres-master:
     image: postgres:16-alpine
-    container_name: pg
+    container_name: pg-master
     ports:
       - "45432:5432"
     env_file:
@@ -10,6 +10,48 @@ services:
       POSTGRES_DB: $POSTGRES_DB
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - master-data:/var/lib/postgresql/data
+      - ./master-init:/docker-entrypoint-initdb.d
+      - ./master-init/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=replica"
+      - "-c"
+      - "max_wal_senders=10"
+      - "-c"
+      - "wal_keep_size=64"
+      - "-c"
+      - "hot_standby=on"
+    networks:
+      - backend
+
+  postgres-slave:
+    image: postgres:16-alpine
+    container_name: pg-slave
+    depends_on:
+      - postgres-master
+    environment:
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    volumes:
+      - slave-data:/var/lib/postgresql/data
+    entrypoint:
+      - "sh"
+      - "-c"
+      - |
+        until pg_isready -h pg-master -U $POSTGRES_USER; do sleep 1; done;
+        rm -rf /var/lib/postgresql/data/*
+        PGPASSWORD=$POSTGRES_PASSWORD pg_basebackup -h pg-master -D /var/lib/postgresql/data -U $POSTGRES_USER -Fp -Xs -P -R
+        exec docker-entrypoint.sh postgres
+    command:
+      - "-c"
+      - "hot_standby=on"
+      - "-c"
+      - "primary_conninfo=host=pg-master port=5432 user=$POSTGRES_USER password=$POSTGRES_PASSWORD"
     networks:
       - backend
 
@@ -20,11 +62,16 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
-      - postgres
+      - postgres-master
+      - postgres-slave
     networks:
       - backend
+
+volumes:
+  master-data:
+  slave-data:
 
 networks:
   backend:
