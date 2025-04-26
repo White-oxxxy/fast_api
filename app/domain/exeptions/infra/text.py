@@ -11,13 +11,6 @@ class TextAlreadyExistedException(InfrastructureException):
 
 
 @dataclass
-class TagAlreadyExistedException(InfrastructureException):
-    @property
-    def message(self):
-        return "Такой тэг уже существует!"
-
-
-@dataclass
 class TextDoesntCreatedException(InfrastructureException):
     @property
     def message(self):

@@ -4,7 +4,6 @@ from uuid import UUID
 from domain.entities.text import (
     Text,
     Tag,
-    TagInput,
 )
 from domain.repositories.base import IBaseRepositoryORM
 
@@ -14,16 +13,13 @@ class ITextTagCRUDRepositoryORM(IBaseRepositoryORM, ABC):
     async def get_text_by_oid(self, required_oid: UUID) -> Text | None: ...
 
     @abstractmethod
-    async def get_text(self, value: str) -> Text | None: ...
+    async def add_text(self, text: Text) -> None: ...
 
     @abstractmethod
     async def get_tag_by_oid(self, required_oid: UUID) -> Tag | None: ...
 
     @abstractmethod
-    async def add_tag(self, tag: TagInput, text_oid: UUID) -> Text | None: ...
-
-    @abstractmethod
-    async def get_tag(self, name: str) -> Tag | None: ...
+    async def add_tag(self, tag: Tag, text_oid: UUID) -> Text | None: ...
 
 
 class ITextTagQueryRepositoryORM(IBaseRepositoryORM, ABC):

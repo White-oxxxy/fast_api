@@ -2,9 +2,10 @@ from domain.entities.user import User
 from domain.values.user import (
     Username,
     RoleName,
+    Password,
+    Email,
 )
 from infra.pg.models.user import UserORM
-from utils.consts.roles import Roles
 
 
 class GetUserFromORM:
@@ -13,5 +14,8 @@ class GetUserFromORM:
         return User(
             oid=user.oid,
             username=Username(user.username),
-            role_name=RoleName(Roles.from_id(user.role_id)),
+            hashed_password=Password(user.password),
+            email=Email(user.email),
+            birthday=user.birthday,
+            role_name=RoleName(user.role.pk),
         )

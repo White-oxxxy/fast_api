@@ -29,7 +29,7 @@ class TextTagQueryRepositoryORM(BaseRepositoryORM, ITextTagQueryRepositoryORM):
         text_orms: list[TextORM] = list(result.unique().scalars().all())
         text_entities: list[Text] = []
         for text_orm in text_orms:
-            text_entities.append(GetTextFromORM().execute(text=text_orm))
+            text_entities.append(GetTextFromORMMapper().execute(text=text_orm))
         return text_entities
 
     async def search_by_value_fragment(self, fragment: str) -> list[Text]:
@@ -43,7 +43,7 @@ class TextTagQueryRepositoryORM(BaseRepositoryORM, ITextTagQueryRepositoryORM):
         text_orms: list[TextORM] = list(result.scalars().all())
         text_entities: list[Text] = []
         for text_orm in text_orms:
-            text_entities.append(GetTextFromORM().execute(text=text_orm))
+            text_entities.append(GetTextFromORMMapper().execute(text=text_orm))
         return text_entities
 
     async def get_all_tags(self) -> list[Tag]:
@@ -54,5 +54,5 @@ class TextTagQueryRepositoryORM(BaseRepositoryORM, ITextTagQueryRepositoryORM):
         tag_orms: list[TagORM] = list(result.scalars().all())
         tag_entities: list[Tag] = []
         for tag_orm in tag_orms:
-            tag_entities.append(GetTagFromORM.execute(tag=tag_orm))
+            tag_entities.append(GetTagFromORMMapper.execute(tag=tag_orm))
         return tag_entities

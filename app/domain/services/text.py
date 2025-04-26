@@ -2,26 +2,30 @@ from abc import ABC, abstractmethod
 from uuid import UUID
 
 from domain.entities.text import Text, Tag
-from domain.entities.text import TextInput, TagInput
+from domain.repositories.text import ITextTagCRUDRepositoryORM
+
+
+class IAddTagsService(ABC):
+    repo: ITextTagCRUDRepositoryORM
+
+    @abstractmethod
+    async def execute(self, tags: list[Tag], text_oid: UUID) -> None: ...
 
 
 class ICreateTextService(ABC):
+    repo: ITextTagCRUDRepositoryORM
+    add_tags_service: IAddTagsService
+
     @abstractmethod
-    async def execute(self, text: TextInput) -> Text: ...
+    async def execute(self, text: Text) -> Text: ...
 
 
 class IGetOrCreateTextService(ABC):
+    repo: ITextTagCRUDRepositoryORM
+    create_text_service: ICreateTextService
+
     @abstractmethod
-    async def execute(self, text: TextInput) -> Text: ...
+    async def execute(self, text: Text) -> Text: ...
 
-
-class IAddTagService(ABC):
-    @abstractmethod
-    async def execute(self, tag: TagInput, text_oid: UUID) -> Text: ...
-
-
-class IGetOrAddTagService(ABC):
-    @abstractmethod
-    async def execute(self, tag: TagInput, text_oid: UUID) -> Text: ...
 
 

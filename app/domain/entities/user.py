@@ -11,16 +11,10 @@ from domain.values.user import (
 )
 
 
-@dataclass(eq=False)
+@dataclass
 class User(BaseEntity):
     username: Username
-    role_name: RoleName
-
-
-@dataclass
-class UserInput(BaseEntity):
-    username: Username
-    password: Password
+    hashed_password: Password
     email: Email
     birthday: datetime
-    role_id: int
+    role_name: RoleName

@@ -1,7 +1,7 @@
 from .from_orm import GetUserFromORM
-from .to_orm import UserInputToUserORM
+from .to_orm import UserToUserORM
 
 __all__ = [
     "GetUserFromORM",
-    "UserInputToUserORM"
+    "UserToUserORM"
 ]
