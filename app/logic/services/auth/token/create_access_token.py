@@ -3,9 +3,8 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 
 from domain.services.auth import ICreateTokenService, ICreateAccessTokenService
-from settings.dev import CommonSettings
-from utils.consts.token_types import TokenTypes
-from logic.services.auth.exceptions.exceptions import JWTDecodeException
+from core.settings import CommonSettings
+from core.consts import TokenTypes
 
 
 @dataclass

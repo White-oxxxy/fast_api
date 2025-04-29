@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from domain.entities.user import User
 from domain.values.user import (
     Username,
@@ -8,6 +10,7 @@ from domain.values.user import (
 from infra.pg.models.user import UserORM
 
 
+@dataclass
 class GetUserFromORM:
     @staticmethod
     def execute(user: UserORM) -> User:
@@ -17,5 +20,5 @@ class GetUserFromORM:
             hashed_password=Password(user.password),
             email=Email(user.email),
             birthday=user.birthday,
-            role_name=RoleName(user.role.pk),
+            role_name=RoleName(user.role.oid),
         )

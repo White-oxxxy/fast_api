@@ -7,8 +7,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-from settings.dev import DevSettings
-from infra.pg.models import *
+from core.settings import DevSettings
 from di.dev.containers import get_settings_container
 
 container = get_settings_container()

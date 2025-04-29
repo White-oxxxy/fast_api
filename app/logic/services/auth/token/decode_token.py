@@ -5,8 +5,8 @@ from dataclasses import dataclass
 from typing import Union
 
 from domain.services.auth import IDecodeTokenService
-from settings.dev import CommonSettings
-from utils.crypto import load_public_key
+from core.settings import CommonSettings
+from logic.services.auth.crypto import load_public_key
 from logic.services.auth.exceptions.exceptions import JWTDecodeException
 
 

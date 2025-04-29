@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-import re
+from re import compile
 
 from .base import BaseValueObject, VT
 from domain.exeptions.application.user import (
@@ -12,7 +12,7 @@ from domain.exeptions.application.user import (
 )
 
 
-EMAIL_REGEX = re.compile(
+EMAIL_REGEX = compile(
     r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 )
 

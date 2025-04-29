@@ -6,8 +6,8 @@ from domain.services.healthchek import IHealthCheckService
 
 @dataclass
 class PostgresHealthcheckService(IHealthCheckService):
-    repo: IDatabaseHealthchekPort
+    port: IDatabaseHealthchekPort
 
     async def execute(self) -> dict[str, bool]:
-        result = await self.repo.ping()
+        result = await self.port.ping()
         return {self.__class__.__name__: result}

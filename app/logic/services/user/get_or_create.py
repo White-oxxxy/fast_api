@@ -1,15 +1,17 @@
 from dataclasses import dataclass
 
 from domain.entities.user import User
-from domain.services.user import IGetOrCreateUserService, ICreateUserService
-from domain.exeptions.infra.user import UserAlreadyExistedException
+from domain.services.user import IGetOrCreateUserService
+from domain.exeptions.infra.user import (
+    UserAlreadyExistedException,
+    RoleDoesntCreatedException,
+)
 from domain.repositories.user import IUserRepositoryORM
 
 
 @dataclass
 class GetOrCreateUserService(IGetOrCreateUserService):
     repo: IUserRepositoryORM
-    create_user_service: ICreateUserService
 
     async def execute(self, user: User) -> User:
         user_entity: User = await self.repo.get_by_oid(required_oid=user.oid)
@@ -17,7 +19,7 @@ class GetOrCreateUserService(IGetOrCreateUserService):
             return user_entity
 
         try:
-            user_entity: User = await self.create_user_service.execute(user=user)
+            user_entity: User = await self.repo.create(user=user)
 
             await self.repo.commit()
 
@@ -28,3 +30,5 @@ class GetOrCreateUserService(IGetOrCreateUserService):
                 return user_entity
             else:
                 raise
+        except RoleDoesntCreatedException:
+            raise

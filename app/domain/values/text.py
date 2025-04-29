@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-import re
+from re import compile
 
 from .base import BaseValueObject, VT
 from domain.exeptions.application.text import (
@@ -10,7 +10,7 @@ from domain.exeptions.application.text import (
 )
 
 
-TAG_REGEX = re.compile(r"^#[\w_-]+$")
+TAG_REGEX = compile(r"^#[\w_-]+$")
 
 
 @dataclass(frozen=True)

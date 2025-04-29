@@ -1,9 +1,12 @@
+from dataclasses import dataclass
+
 from domain.entities.text import Text, Tag
 from domain.values.text import TextValue, TagName
 from domain.values.user import Username
 from infra.pg.models.user import TextORM, TagORM
 
 
+@dataclass
 class TextToTextORMMapper:
     def execute(self, text: Text) -> TextORM:
         return TextORM(
@@ -23,6 +26,7 @@ class TextToTextORMMapper:
         ]
 
 
+@dataclass
 class TagToTagORMMapper:
     @staticmethod
     def execute(tag: Tag) -> TagORM:

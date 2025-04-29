@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Union
-
-from domain.entities.token import Token
+from typing import Union
 
 
 class ICreateAccessTokenService(ABC):
@@ -61,8 +59,3 @@ class ISetRefreshCookieService(ABC):
 class ISetAccessCookieService(ABC):
     @abstractmethod
     def execute(self, token: str, max_age: int | None = None) -> None: ...
-
-
-class ITokenService(ABC):
-    @abstractmethod
-    async def get_or_create(self, token: Token) -> Token: ...

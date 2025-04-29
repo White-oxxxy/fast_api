@@ -2,12 +2,11 @@ from dataclasses import dataclass
 
 from fastapi import Response
 
-from logic.services.auth.exceptions.exceptions import JWTDecodeException
 from domain.services.auth import (
     ISetRefreshCookieService,
     IDecodeTokenService,
 )
-from settings.dev import CommonSettings
+from core.settings import CommonSettings
 
 
 @dataclass

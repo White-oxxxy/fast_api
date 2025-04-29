@@ -1,7 +1,6 @@
 from dishka import Provider, Scope, provide
 
-from settings.config import *
-from settings.dev import CommonSettings, DevSettings, ProdSettings
+from core.settings import CommonSettings, DevSettings, ProdSettings
 
 
 class DevSettingsProvider(Provider):

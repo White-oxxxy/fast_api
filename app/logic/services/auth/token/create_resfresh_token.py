@@ -9,9 +9,8 @@ from domain.services.auth import (
     ICreateRefreshTokenService,
     ICreateTokenService,
 )
-from settings.dev import CommonSettings
-from utils.consts.token_types import TokenTypes
-from logic.services.auth.exceptions.exceptions import JWTDecodeException
+from core.settings import CommonSettings
+from core.consts import TokenTypes
 
 
 @dataclass

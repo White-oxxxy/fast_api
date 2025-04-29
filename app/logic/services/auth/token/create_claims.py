@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from settings.dev import CommonSettings
+from core.settings import CommonSettings
 from domain.services.auth import ICreateClaimsService
 
 

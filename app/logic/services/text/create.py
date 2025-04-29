@@ -2,10 +2,7 @@ from sqlalchemy.exc import IntegrityError
 
 from dataclasses import dataclass
 
-from domain.services.text import (
-    ICreateTextService,
-    IAddTagsService,
-)
+from domain.services.text import ICreateTextService
 from domain.repositories.text import ITextTagCRUDRepositoryORM
 from domain.entities.text import (
     Text,
@@ -20,7 +17,6 @@ from domain.exeptions.infra.text import (
 @dataclass
 class CreateTextService(ICreateTextService):
     repo: ITextTagCRUDRepositoryORM
-    add_tags_service: IAddTagsService
 
     async def execute(self, text: Text) -> Text:
         tags: list[Tag] = []
@@ -41,7 +37,7 @@ class CreateTextService(ICreateTextService):
             raise TextAlreadyExistedException()
 
         try:
-            await self.add_tags_service.execute(tags=text.tags, text_oid=text.oid)
+            await self.repo.add_tags(tags=text.tags, text_oid=text.oid)
         except TextDoesntCreatedException:
             raise
 

@@ -1,13 +1,19 @@
 from dataclasses import dataclass
 
 from sqlalchemy import Select, select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import selectinload
+from sqlalchemy.exc import IntegrityError
 from uuid import UUID
 
 from domain.repositories.text import ITextTagCRUDRepositoryORM
 from domain.entities.text import (
     Text,
     Tag,
+)
+from domain.exeptions.infra.text import (
+    TextAlreadyExistedException,
+    TextDoesntCreatedException,
+    TagAlreadyExistedException,
 )
 from infra.pg.mappers.text import (
     TextToTextORMMapper,
@@ -33,7 +39,7 @@ class TextTagCRUDRepositoryORM(BaseRepositoryORM, ITextTagCRUDRepositoryORM):
         stmt = (
             select(TextORM)
             .where(TextORM.oid == required_oid)
-            .options(joinedload(TextORM.tags))
+            .options(selectinload(TextORM.tags))
         )
         text: TextORM | None = await self.session.scalar(stmt)
         if not text:
@@ -45,6 +51,10 @@ class TextTagCRUDRepositoryORM(BaseRepositoryORM, ITextTagCRUDRepositoryORM):
     async def add_text(self, text: Text) -> None:
         text_orm: TextORM = self.text_domain_to_orm_mapper.execute(text=text)
         self.session.add(text_orm)
+        try:
+            await self.session.flush()
+        except IntegrityError:
+            raise TextAlreadyExistedException()
 
     async def get_tag_by_oid(self, required_oid: UUID) -> Tag | None:
         tag: TagORM | None = await self.session.get(TagORM, required_oid)
@@ -54,18 +64,21 @@ class TextTagCRUDRepositoryORM(BaseRepositoryORM, ITextTagCRUDRepositoryORM):
         tag_entity: Tag = GetTagFromORMMapper.execute(tag=tag)
         return tag_entity
 
-    async def add_tag(self, tag: Tag, text_oid: UUID) -> Text | None:
+    async def add_tags(self, tags: list[Tag], text_oid: UUID) -> Text:
         stmt: Select[tuple[TextORM]] = (
             select(TextORM)
             .where(TextORM.oid == text_oid)
-            .options(joinedload(TextORM.tags))
+            .options(selectinload(TextORM.tags))
         )
         text: TextORM | None = await self.session.scalar(stmt)
         if not text:
-            return None
+            raise TextDoesntCreatedException()
 
-        tag_orm: TagORM = self.tag_domain_to_orm_mapper.execute(tag=tag)
-        text.tags.append(tag_orm)
+        tags_orm: list[TagORM] = []
+        for tag in tags:
+            tag_orm: TagORM = self.tag_domain_to_orm_mapper.execute(tag=tag)
+            tags_orm.append(tag_orm)
+        text.tags.extend(tags_orm)
         self.session.add(text)
 
         text_entity: Text = GetTextFromORMMapper().execute(text=text)

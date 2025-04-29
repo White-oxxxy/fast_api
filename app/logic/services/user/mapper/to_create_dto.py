@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from domain.entities.user import UserInput
 from dto.user.user import UserCreate
 from dto.user.user_response import User
-from utils.consts.roles import Roles
+from core.consts import Roles
 
 
 @dataclass

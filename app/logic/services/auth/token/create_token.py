@@ -8,8 +8,8 @@ from domain.services.auth import (
     ICreateTokenService,
     ICreateClaimsService,
 )
-from settings.dev import CommonSettings
-from utils.crypto import load_private_key
+from core.settings import CommonSettings
+from logic.services.auth.crypto import load_private_key
 
 
 @dataclass

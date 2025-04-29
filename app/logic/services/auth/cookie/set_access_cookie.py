@@ -1,15 +1,12 @@
 from dataclasses import dataclass
 
-from typing import Union
 from fastapi import Response
 
-from logic.services.auth.exceptions.exceptions import JWTDecodeException
 from domain.services.auth import (
     ISetAccessCookieService,
     IDecodeTokenService,
 )
-from settings.dev import CommonSettings
-from utils.crypto import load_public_key
+from core.settings import CommonSettings
 
 
 @dataclass

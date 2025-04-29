@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from domain.entities.text import Tag, Text
 from domain.values.text import (
     TagName,
@@ -10,6 +12,7 @@ from infra.pg.models.user import (
 )
 
 
+@dataclass
 class GetTextFromORMMapper:
     def execute(self, text: TextORM) -> Text:
         return Text(
@@ -24,6 +27,7 @@ class GetTextFromORMMapper:
         return [Tag(oid=tag.oid, name=TagName(tag.name), uploader_name=Username(tag.uploader_name)) for tag in tags]
 
 
+@dataclass
 class GetTagFromORMMapper:
     @staticmethod
     def execute(tag: TagORM) -> Tag:
